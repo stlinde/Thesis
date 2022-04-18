@@ -1,3 +1,7 @@
+# Manually added files to gitignore
+train.csv
+asset_details.csv
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
