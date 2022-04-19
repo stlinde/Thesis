@@ -1,20 +1,19 @@
-# src/data/data_generator.py
+# src/data/data_generators.py
 """
-This script generates the basic features that are going to be used throughout
-the project.
-Features:
-    Tick Returns
-    Hourly Returns
-    Daily Returns
-    Log Prices
-    Log Returns
-    Daily Realized Variance
-    Sum Over Period
+This script holds functions for generating data for BaseDataset.
+Functions:
+    load_data:              Loads the data file into pandas DataFrame.
+    set_datetime_index:     Sets datetime index on DataFrame
+    sum_periods:            Sums the selected feature over a given period.
+    generate_returns:       Generates returns of a feature.
+    generate_log_prices:    Generates Logarithmic prices of a feature.
+    generate_log_returns:   Generates Logarithmic returns of a feature.
+    generate_realized_var:  Generates the Realized Variance of a feature.
 """
 import pandas as pd
 import numpy as np
 
-def load_dataset(path: str):
+def load_data(path: str):
     """
     Loads dataset.
     :param path:        str - The path to the dataset.
@@ -52,27 +51,26 @@ def sum_period(data, period: str):
         case _:
             raise Exception(f"Invalid period. Expected: daily or monthly")
 
-def generate_returns(data, period: str, feature: str = "Close"):
+def generate_returns(data, period: str):
     """
     Generates returns based on period.
-    :param data:    pandas.DataFrame - DataFrame with datetime index and feature.
+    :param data:    pandas.Series - Series with datetime index and feature.
     :param period:  str - Period to compute return over.
-    :param feature: (Optional) str - The feature to compute the returns off. Default: Close
     """
     match period:
         case "tick":
-            return data[feature].pct_change()[1:]
+            return data.pct_change()[1:]
         case "daily":
-            return data[feature].resample('D').last().pct_change()[1:]
+            return data.resample('D').last().pct_change()[1:]
         case "monthly":
-            return data[feature].resample('M').last().pct_change()[1:]
+            return data.resample('M').last().pct_change()[1:]
         case _:
             raise Exception(f"Invalid period. Expected: tick, daily or monthly. Got: {period}")
 
 def generate_log_price(data):
     """
     Generates the Logarithmic price of the given feature.
-    :param data: pandas.Series - The price data to be computed on. Must be datetime indexed.
+    :param data:    pandas.Series - The price data to be computed on. Must be datetime indexed.
     """
     return np.log(data.astype("float64"))
 
