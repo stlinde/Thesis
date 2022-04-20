@@ -105,3 +105,15 @@ def generate_realized_var(data, period: str):
             return daily_log_returns.pow(2).groupby(pd.Grouper(freq="M")).sum()
         case _:
             raise Exception(f"Invalid period. Expected: daily or monthly. Got: {period}")
+
+def generate_intraday(data, date):
+    """
+    Generates an array of intraday movements in a given feature.
+    :param data: pandas.Series - The data of the feature. Must have datetime index.
+    :param date: pandas.DateTiem - The date for which to generate the array.
+    """
+    if isinstance(date, str):
+        array = data[data.index.date == pd.to_datetime(date).date()]
+    else:
+        array = data[data.index.date == date]
+    return np.asarray(array)

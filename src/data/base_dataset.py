@@ -21,6 +21,13 @@ class BaseDataset():
         """
         return self.dataframe
 
+    def get_feature(self, feature: str):
+        """
+        Returns the specified column of the BaseDataset dataframe.
+        :param feature: str - The column name of the feature.
+        """
+        return self.dataframe[feature]
+
     def head(self):
         """ 
         Returns the head of the DataFrame.
