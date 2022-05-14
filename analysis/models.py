@@ -299,9 +299,18 @@ class HAR_RSI(Model):
             temp["Daily"], roll=30
         )
         temp = temp[1:]
+        print(temp)
 
-        temp["RS+"] = generate_semi_variance(self.daily_returns, "positive")
-        temp["RS-"] = generate_semi_variance(self.daily_returns, "negative")
+        temp["RS+"] = generate_semi_variance(
+            temp["Daily"],
+            self.daily_returns,
+            "positive"
+        )
+        temp["RS-"] = generate_semi_variance(
+            temp["Daily"],
+            self.daily_returns,
+            "negative"
+        )
         temp = temp.iloc[29:, :]
 
         # Setting up the X_train, X_test, y_train, y_test

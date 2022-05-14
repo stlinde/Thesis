@@ -101,24 +101,25 @@ def generate_squared_jumps(returns, rv):
     :param rv:          pd.Series - The realized variances
     """
     bpv = generate_bpv(returns)
-    print(bpv.shape)
-    print(rv.shape)
     rv = rv[1:]
-    print(rv.shape[0])
     return [np.maximum(rv[i] - bpv[i], 0) for i in range(rv.shape[0])]
 
+################
+## NOT RITGHT ##
+################
 def generate_realized_quarticity(data):
     """Generates the realized quarticity.
     :param data:        pd.Series - The series containing the realized variances.
     """
     return np.sum(data**4)*data.shape[0] / 3
 
-def generate_semi_variance(data, sign: str):
+def generate_semi_variance(rv, returns, sign: str):
     """Generates the realized semi variance.
-    :param data:    pd.Series - The series containing the resalized variance.
+    :param rv:    pd.Series - The series containing the resalized variance.
+    :param returns: pd.Series - The series containing the returns.
     :param sign:    str - positive or negative semivariance.
     """
     if sign == "positive":
-        return [x if x > 0 else 0 for x in data]
+        return [rv[i] if returns[i] > 0 else 0 for i in range(len(rv))]
     else:
-        return [x if x < 0 else 0 for x in data]
+        return [rv[i] if returns[i] < 0 else 0 for i in range(len(rv))]
