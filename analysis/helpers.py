@@ -123,3 +123,23 @@ def generate_semi_variance(rv, returns, sign: str):
         return [rv[i] if returns[i] > 0 else 0 for i in range(len(rv))]
     else:
         return [rv[i] if returns[i] < 0 else 0 for i in range(len(rv))]
+
+
+def interpolate_missing_values(data):
+    """Interpolates missing values in DataFrame.
+
+    :param data:    pd.DataFrame - The dataframe containing missing values.
+    """
+    time_index = pd.date_range(
+        start = data.index[0],
+        end = data.index[-1],
+        freq = pd.infer_freq(data.index)
+    ) 
+    temp = pd.DataFrame(index=time_index)
+    temp = temp.merge(
+        right = data,
+        how = 'left',
+        left_index = True,
+        right_index = True
+    )
+    return temp.interpolate()
