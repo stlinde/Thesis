@@ -3,8 +3,7 @@
 Implements the econometric models in the analysis.
 Implements functionalities for training and testing.
 """
-import pandas as pd
-import numpy as np
+import pandas as pd import numpy as np
 import statsmodels.api as sm
 from statsmodels.regression.linear_model import OLS
 
@@ -52,7 +51,6 @@ class Model:
         X = X.reset_index(drop=True)
         y = y.reset_index(drop=True)
         self.forecasts = []
-        print(X) 
         for i in range(365, len(X)):
             self.forecasts.append(
                 self.one_step_ahead(X.iloc[i - 365:i - 1, :], y.iloc[i - 365:i - 1], X.iloc[i, :]).item()
@@ -243,7 +241,6 @@ class HAR_J(Model):
             temp["Daily"], roll=30
         )
         temp = temp[1:]
-        print(temp.shape[0])
         temp["Jumps"] = generate_squared_jumps(self.daily_returns, self.rv)
 
         temp = temp.iloc[29:, :].reset_index(drop=True)
@@ -299,7 +296,6 @@ class HAR_RSI(Model):
             temp["Daily"], roll=30
         )
         temp = temp[1:]
-        print(temp)
 
         temp["RS+"] = generate_semi_variance(
             temp["Daily"],
