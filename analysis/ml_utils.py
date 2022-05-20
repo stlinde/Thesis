@@ -56,11 +56,11 @@ class RVSeriesDataset(Dataset):
     def __init__(self, data,  seq_length):
         self.seq_length = seq_length
         self.data = data
-        self.y = data[30:]
+        self.y = data[self.seq_length:]
 
     def __len__(self):
         """Returns the length of the dataset."""
-        return len(self.y)
+        return len(self.y) - 2
 
     def __getitem__(self, idx):
         """Method for iterating and indexing the dataset."""
