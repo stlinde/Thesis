@@ -64,13 +64,13 @@ class RVSeriesDataset(Dataset):
 
     def __getitem__(self, idx):
         """Method for iterating and indexing the dataset."""
-        end = (self.y.index[idx]
+        end = (self.y.index[idx + 1]
             - timedelta(days=1)).strftime("%Y-%m-%d")
-        start = (self.y.index[idx]
+        start = (self.y.index[idx + 1]
             - timedelta(days=self.seq_length + 1)).strftime("%Y-%m-%d")
 
         X_item = torch.Tensor(self.data.loc[start:end])
-        y_item = torch.tensor(self.y[idx])
+        y_item = torch.tensor(self.y[idx + 1])
         return {
             "X": X_item,
             "y": y_item
