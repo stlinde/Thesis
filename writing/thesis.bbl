@@ -1,0 +1,27 @@
+\begin{thebibliography}{}
+
+\bibitem [\protect \citeauthoryear {%
+Elton%
+}{%
+Elton%
+}{%
+{\protect \APACyear {2014}}%
+}]{%
+eltonModernPortfolioTheory2014}
+\APACinsertmetastar {%
+eltonModernPortfolioTheory2014}%
+\begin{APACrefauthors}%
+Elton, E\BPBI J.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYear{2014}.
+\newblock
+\APACrefbtitle {Modern Portfolio Theory and Investment Analysis} {Modern
+  portfolio theory and investment analysis}\ (\PrintOrdinal{Ninth edition}\
+  \BEd).
+\newblock
+\APACaddressPublisher{{Hoboken, NJ}}{{Wiley}}.
+\PrintBackRefs{\CurrentBib}
+
+\end{thebibliography}
