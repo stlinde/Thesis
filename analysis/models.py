@@ -3,7 +3,8 @@
 Implements the econometric models in the analysis.
 Implements functionalities for training and testing.
 """
-import pandas as pd import numpy as np
+import pandas as pd
+import numpy as np
 import statsmodels.api as sm
 from statsmodels.regression.linear_model import OLS
 
@@ -269,6 +270,9 @@ class HAR_J(Model):
     def out_sample_eval(self):
         return super().out_sample_eval(self.X_test, self.y_test)
 
+    def loss(self, metric: str):
+        return super().loss(self.y_test[365:], metric)
+
 class HAR_RSI(Model):
     def __init__(self, data, resolutions):
         self.data = data
@@ -336,5 +340,3 @@ class HAR_RSI(Model):
     def loss(self, metric: str):
         return super().loss(self.y_test[365:], metric)
 
-class GarchX(Model):
-    pass

@@ -100,18 +100,23 @@ def generate_squared_jumps(returns, rv):
     :param returns:     pd.Series - The returns.
     :param rv:          pd.Series - The realized variances
     """
-    bpv = generate_bpv(returns)
-    rv = rv[1:]
-    return [np.maximum(rv[i] - bpv[i], 0) for i in range(rv.shape[0])]
+    df = pd.DataFrame()
+    df["bpv"] = generate_bpv(returns)
+    df["rv"] = rv
+    df["jumps"] = np.maximum(df["rv"] - df["bpv"], 0)
+    return df["jumps"]
 
-################
-## NOT RITGHT ##
-################
-def generate_realized_quarticity(data):
-    """Generates the realized quarticity.
-    :param data:        pd.Series - The series containing the realized variances.
+def realized_quarticity(data):
+    """Computes the realized quarticity
+    :param data:        pd.Series - The series containing the returns.
     """
     return np.sum(data**4)*data.shape[0] / 3
+
+def generate_realized_quarticity(data):
+    """Generates the realized quarticity for a time series.
+    :param data:        pd.Series - The series containing the returns.
+    """
+    return realized_quantity(data, realized_quarticity)
 
 def generate_semi_variance(rv, returns, sign: str):
     """Generates the realized semi variance.
