@@ -1,5 +1,6 @@
 \chapter{Introduction}
 \label{sec:org06668a7}
+\begin{comment}
 OUTLINE:
     * Cryptocurrency
     * INtroduced by Satoshi Nakimoto
@@ -17,18 +18,56 @@ OUTLINE:
     * Gives availability to non-linear models.
     * But the deep learning models may not be fit for time series data and inference.
     * How if we combine the two - can we use the neural networks to improve the econometric model's prediction accuracy and the econometric models to improve the inference of the neural networks?
+\end{comment}
 
+\section{The Electronic Currency Bitcoin}
+\label{sec:org92klsa0}
 Since the mythical author Satoshi Nakamoto published the whitepaper on Bitcoin \textit{"Bitcoin: A Peer-to-Peer Electronic Cash System"} in 2008, blockchain technologies and cryptocurrencies have become everyday names and subject of much research.
-The original intend for Bitcoin was to be \textit{"A purey peer-to-peer version of electronic cash"} CITE.
-The goal of this electronic cash is to allow \textit{"...online payments to be sent directly from one party to another without going to a financial institution"} CITE.
+The original intend for Bitcoin was to be \textit{"A purey peer-to-peer version of electronic cash"} \cite[p. 1]{nakamotoBitcoinPeertoPeerElectronic2008}.
+The goal of this electronic cash is to allow \textit{"...online payments to be sent directly from one party to another without going to a financial institution"} \cite[p. 1]{nakamotoBitcoinPeertoPeerElectronic2008}.
 Bitcoin, was thus invented as an alternative to cash and other currencies, as a digital and secure medium to make transactions with.
-The use of Bitcoin as a currency is still limited, but the value of Bitcoins have soared since its inception.
-This have made Bitcoin an investment asset rather than a currency for many.
-Investing in Bitcoin can be seen as a 
+
+To be viewed as a currency, Bitcoin must satisfy the following characteristics.
+Bitcoin must be a medium of exchange, which by the fact that it enables peer-to-peer transactions, may be deemed satisfied.
+It must function as a unit of account, thus, one must be able to use bitcoin as a measure of relative worth of economic transactions \cite[p. 80-81]{mankiwMacroeconomics2009}.
+Lastly, it must function as a store of value, and therefore, must be able to transfer the purchasing power from the present to the future \cite[p. 80-81]{mankiwMacroeconomics2009}.
+The first of the characteristics, being a medium of exchange, seems to be satisfied, particularly because more businesses have begun accepting Bitcoin as a payment \cite[p. 36-38]{YERMACK201531}.
+To function as a store of value, a currency must be able to be securely stored and maintain a relatively stable value in the periods between use.
+Ordinarily, the ability of a currency of being securely stored is maintained by a bank.
+Storing Bitcoins is done through digital wallets, and the ability of being securely stored is facilitated by insuring the digital wallet, often done by the digital wallet companies.
+The major concern for Bitcoin in terms of being considered a viable currency is its fluctuations in value.
+The characteristics of being a store of value and a unit of value, is reliant on a somewhat stable value of the currency.
+Bitcoin shows extreme volatilities compared with other currencies, and its market value can vary greatly within a short period of time \cite[p. 38-43]{YERMACK201531}.
+This challenges Bitcoin as a currency, but enables Bitcoin to be seen and used as a speculative investment.
+It is this extreme volatility that makes Bitcoin an interesting asset to consider in this thesis.
+
+\section{Volatility in the Financial Markets}
+\label{sec:org0l6r8i7}
+Volatility can, in layman terms, be described as the size of the fluctuations or dispersion of an asset over a given period of time.
+It is one of the central measures of interest in finance.
+Volatility is used extensively in risk management, asset allocation, derivatives pricing, hedging and many more financial subjects \cite[p. 237]{engleWhatGoodVolatility}.
+One of the primary goals of volatility modeling is to predict the future volatility.
+Being able to accurately predict future volatility, one may better price various financial assets, select portfolios, and manage risks.
+Volatility is therefore a subject of great interest for financial applications.
+
+Being a subject of much research and application, volatility is well researched.
+It is, however, not possible to directly observe volatility \cite[p. 98]{tsayAnalysisFinancialTime2005}.
+Thus, volatility must be estimated by the practitioner or researcher, before being modeled or used in research.
+The most common ways to estimate volatility is by using the standard deviation of historic returns or estimating the implied volatilty as given by options pricing theory \cite[p. 98]{tsayAnalysisFinancialTime2005} \cite[p. 325]{hullOptionsFuturesOther2015a}.
+A third approach, that has been increasing in its use, for estimating volatility is by using the realized volatility \cite{andersenAnsweringSkepticsYes1998a}
+Using 
 
 
 
+\section{Machine Learning}
+\label{sec:org92l9ha9}
 
+\section{Research Question}
+\label{sec:org6232157}
+\emph{How can neural networks enhance the forecasting capability of HAR-style models in realized volatility}
+
+\section{Thesis Structure}
+\label{sec:org6i32l57}
 The thesis will be structured as follows.
 Chapter 2 will contain an examination of the financial theory underlying volatility forecasting and cryptocurrency trading.
 The linear econometric time series models and their assumptions will be introduced in chapter 3.
@@ -37,8 +76,4 @@ The evaluation setup of the analysis will be presented in chapter 5.
 Chapter 6 will present the results of the analysis, with a comparison between the econometric models as baselines and the neural network.
 The discussion, chapter 7, will be revolving around the applicability of neural networks for volatility forecasting and especially the ability of making inference on neural networks.
 Chapter 8 will conclude the project
-
-\chapter{Research Question}
-\label{sec:org6232157}
-\emph{How can neural networks enhance the forecasting capability of HAR-style models in realized volatility}
 

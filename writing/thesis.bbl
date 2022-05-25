@@ -1,27 +1,181 @@
 \begin{thebibliography}{}
 
 \bibitem [\protect \citeauthoryear {%
-Elton%
+Andersen%
+\ \BBA {} Bollerslev%
 }{%
-Elton%
+Andersen%
+\ \BBA {} Bollerslev%
 }{%
-{\protect \APACyear {2014}}%
+{\protect \APACyear {1998}}%
 }]{%
-eltonModernPortfolioTheory2014}
+andersenAnsweringSkepticsYes1998a}
 \APACinsertmetastar {%
-eltonModernPortfolioTheory2014}%
+andersenAnsweringSkepticsYes1998a}%
 \begin{APACrefauthors}%
-Elton, E\BPBI J.%
+Andersen, T\BPBI G.%
+\BCBT {}\ \BBA {} Bollerslev, T.%
 \end{APACrefauthors}%
 \unskip\
 \newblock
-\APACrefYear{2014}.
+\APACrefYearMonthDay{1998}{{\APACmonth{11}}}{}.
 \newblock
-\APACrefbtitle {Modern Portfolio Theory and Investment Analysis} {Modern
-  portfolio theory and investment analysis}\ (\PrintOrdinal{Ninth edition}\
+{\BBOQ}\APACrefatitle {Answering the {{Skeptics}}: {{Yes}}, {{Standard
+  Volatility Models}} Do {{Provide Accurate Forecasts}}} {Answering the
+  {{Skeptics}}: {{Yes}}, {{Standard Volatility Models}} do {{Provide Accurate
+  Forecasts}}}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{International Economic Review}{39}{4}{885}.
+\newblock
+\begin{APACrefDOI} \doi{10.2307/2527343} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Engle%
+\ \BBA {} Patton%
+}{%
+Engle%
+\ \BBA {} Patton%
+}{%
+{\protect \APACyear {{\protect \bibnodate {}}}}%
+}]{%
+engleWhatGoodVolatility}
+\APACinsertmetastar {%
+engleWhatGoodVolatility}%
+\begin{APACrefauthors}%
+Engle, R\BPBI F.%
+\BCBT {}\ \BBA {} Patton, A\BPBI J.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{{\protect \bibnodate {}}}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {What Good Is a Volatility Model?} {What good is a
+  volatility model?}{\BBCQ}
+\newblock
+\APACjournalVolNumPages{QUANTITATIVE FINANCE}{}{}{9}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Hull%
+}{%
+Hull%
+}{%
+{\protect \APACyear {2015}}%
+}]{%
+hullOptionsFuturesOther2015a}
+\APACinsertmetastar {%
+hullOptionsFuturesOther2015a}%
+\begin{APACrefauthors}%
+Hull, J.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYear{2015}.
+\newblock
+\APACrefbtitle {Options, {{Futures}}, and {{Other Derivatives}}} {Options,
+  {{Futures}}, and {{Other Derivatives}}}\ (\PrintOrdinal{Ninth edition}\
   \BEd).
 \newblock
-\APACaddressPublisher{{Hoboken, NJ}}{{Wiley}}.
+\APACaddressPublisher{{Boston}}{{Pearson}}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Mankiw%
+}{%
+Mankiw%
+}{%
+{\protect \APACyear {2009}}%
+}]{%
+mankiwMacroeconomics2009}
+\APACinsertmetastar {%
+mankiwMacroeconomics2009}%
+\begin{APACrefauthors}%
+Mankiw, N\BPBI G.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYear{2009}.
+\newblock
+\APACrefbtitle {Macroeconomics} {Macroeconomics}\ (\PrintOrdinal{7th ed}\
+  \BEd).
+\newblock
+\APACaddressPublisher{{New York, NY}}{{Worth Publishers}}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Nakamoto%
+}{%
+Nakamoto%
+}{%
+{\protect \APACyear {2008}}%
+}]{%
+nakamotoBitcoinPeertoPeerElectronic2008}
+\APACinsertmetastar {%
+nakamotoBitcoinPeertoPeerElectronic2008}%
+\begin{APACrefauthors}%
+Nakamoto, S.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2008}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Bitcoin: {{A Peer-to-Peer Electronic Cash System}}}
+  {Bitcoin: {{A Peer-to-Peer Electronic Cash System}}}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{}{}{}{9}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Tsay%
+}{%
+Tsay%
+}{%
+{\protect \APACyear {2005}}%
+}]{%
+tsayAnalysisFinancialTime2005}
+\APACinsertmetastar {%
+tsayAnalysisFinancialTime2005}%
+\begin{APACrefauthors}%
+Tsay, R\BPBI S.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYear{2005}.
+\newblock
+\APACrefbtitle {Analysis of {{Financial Time Series}}} {Analysis of {{Financial
+  Time Series}}}\ (\PrintOrdinal{Second}\ \BEd).
+\newblock
+\APACaddressPublisher{}{{Wiley}}.
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Yermack%
+}{%
+Yermack%
+}{%
+{\protect \APACyear {2015}}%
+}]{%
+YERMACK201531}
+\APACinsertmetastar {%
+YERMACK201531}%
+\begin{APACrefauthors}%
+Yermack, D.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2015}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Chapter 2 - Is Bitcoin a Real Currency? {{An}} Economic
+  Appraisal} {Chapter 2 - is bitcoin a real currency? {{An}} economic
+  appraisal}.{\BBCQ}
+\newblock
+\BIn{} D.~Lee Kuo~Chuen\ (\BED), \APACrefbtitle {Handbook of Digital Currency}
+  {Handbook of digital currency}\ (\BPGS\ 31--43).
+\newblock
+\APACaddressPublisher{{San Diego}}{{Academic Press}}.
+\newblock
+\begin{APACrefDOI} \doi{10.1016/B978-0-12-802117-0.00002-3} \end{APACrefDOI}
 \PrintBackRefs{\CurrentBib}
 
 \end{thebibliography}

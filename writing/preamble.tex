@@ -1,9 +1,11 @@
 % Created 2022-02-11 Fri 11:35
 % Intended LaTeX compiler: pdflatex
-\documentclass[11pt, a4paper, openright]{report}
+\documentclass[12pt, a4paper, openright]{report}
+\renewcommand{\baselinestretch}{1.2} 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
+\usepackage{comment}
 \usepackage{grffile}
 \usepackage{longtable}
 \usepackage{wrapfig}
@@ -17,9 +19,14 @@
 \author{Sebastian Tved Linde}
 \usepackage{apacite}
 \usepackage{natbib}
-\usepackage[inner=28mm, outer=41mm,]{geometry}
+\usepackage[
+  outer=2.5cm,
+  inner=2.5cm,
+  top=2.5cm,
+  bottom=2.5cm,
+]{geometry}
 \usepackage{titlesec}
-\titleformat{\chapter}[display]{\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titleformat{\chapter}[hang]{\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter}{20pt}{\Huge}
 \titleformat*{\section}{\normalfont\Large\bfseries}
 \titleformat*{\subsection}{\normalfont\large\bfseries}
 \titleformat*{\subsubsection}{\normalfont\normalsize\bfseries}
