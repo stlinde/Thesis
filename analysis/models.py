@@ -60,16 +60,16 @@ class Model:
 
     def loss(self, y_test, metric: str):
         y_test = y_test.reset_index(drop=True)
-        match metric:
-            case "MSE":
-                return compute_mse(y_test, self.forecasts)
-            case "MAE":
-                return compute_mae(y_test, self.forecasts)
-            case "MAPE":
-                return compute_mape(y_test, self.forecasts)
-            case "QLIKE":
-                return compute_qlike(y_test, self.forecasts)
-        
+        if metric == "MSE":
+            return compute_mse(y_test, self.forecasts)
+        elif metric == "MAE":
+            return compute_mae(y_test, self.forecasts)
+        elif metric == "MAPE":
+            return compute_mape(y_test, self.forecasts)
+        elif metric == "QLIKE":
+            return compute_qlike(y_test, self.forecasts)
+        else:
+            return "Loss function not implemented"
             
 
 class HAR(Model):
