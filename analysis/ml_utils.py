@@ -13,7 +13,9 @@ from torch.utils.data import DataLoader
 import torch.nn as nn
 import torch.optim as optim
 
-from helpers import interpolate_missing_values
+from helpers import generate_realized_variance, generate_rolling_realized_variance, interpolate_missing_values
+from helpers import generate_log_returns, generate_squared_jumps
+from helpers import generate_semi_variance
 
 # Setting up the environment to ensure reproducability
 np.random.seed(1)
@@ -76,11 +78,230 @@ class RVSeriesDataset(Dataset):
             "y": y_item
         }
 
-def overfit_batch():
-    pass
 
-def train_network():
-    pass
+class HARDataset(Dataset):
+    """Class for generating data for neural networks with HAR feature inputs"""
+    def __init__(self, data, seq_length):
+        self.seq_length = seq_length
+        self.data = data
+        self.y = data["Daily"].iloc[self.seq_length:]
 
-def evaluate_network():
-    pass
+    def __len__(self):
+        return len(self.y) - 2
+
+    def __getitem__(self, idx):
+        """Method for iterating and indexing the dataset."""
+        end = (self.y.index[idx + 1]
+               - timedelta(days=1)).strftime("%Y-%m-%d")
+        start = (self.y.index[idx + 1]
+                 - timedelta(days=self.seq_length + 1)).strftime("%Y-%m-%d")
+
+        X_daily = torch.Tensor(self.data["Daily"].loc[start:end])
+        X_weekly = torch.Tensor(self.data["Weekly"].loc[start:end])
+        X_monthly = torch.Tensor(self.data["Monthly"].loc[start:end])
+        y_item = torch.tensor(self.y[idx + 1])
+
+        return {
+            "X_daily": X_daily,
+            "X_weekly": X_weekly,
+            "X_monthly": X_monthly,
+            "y": y_item
+        }
+
+        
+class Log_HARDataset(Dataset):
+    """Class for generating data for neural networks with HAR feature inputs"""
+    def __init__(self, data, seq_length):
+        self.seq_length = seq_length
+        self.data = data
+        self.y = data["Daily"].iloc[self.seq_length:]
+
+    def __len__(self):
+        return len(self.y) - 2
+
+    def __getitem__(self, idx):
+        """Method for iterating and indexing the dataset."""
+        end = (self.y.index[idx + 1]
+               - timedelta(days=1)).strftime("%Y-%m-%d")
+        start = (self.y.index[idx + 1]
+                 - timedelta(days=self.seq_length + 1)).strftime("%Y-%m-%d")
+
+        X_daily = torch.Tensor(self.data["Daily"].loc[start:end])
+        X_weekly = torch.Tensor(self.data["Weekly"].loc[start:end])
+        X_monthly = torch.Tensor(self.data["Monthly"].loc[start:end])
+        y_item = torch.tensor(self.y[idx + 1])
+
+        return {
+            "X_daily": X_daily,
+            "X_weekly": X_weekly,
+            "X_monthly": X_monthly,
+            "y": y_item
+        }
+
+
+class HAR_RS_I_Dataset(Dataset):
+    """Class for generating data for neural networks with HAR feature inputs"""
+    def __init__(self, data, seq_length):
+        self.seq_length = seq_length
+        self.data = data
+        self.y = data["Daily"].iloc[self.seq_length:]
+
+    def __len__(self):
+        return len(self.y) - 2
+
+    def __getitem__(self, idx):
+        """Method for iterating and indexing the dataset."""
+        end = (self.y.index[idx + 1]
+               - timedelta(days=1)).strftime("%Y-%m-%d")
+        start = (self.y.index[idx + 1]
+                 - timedelta(days=self.seq_length + 1)).strftime("%Y-%m-%d")
+
+        X_rsp = torch.Tensor(self.data["RS+"].loc[start:end])
+        X_rsn = torch.Tensor(self.data["RS-"].loc[start:end])
+        X_weekly = torch.Tensor(self.data["Weekly"].loc[start:end])
+        X_monthly = torch.Tensor(self.data["Monthly"].loc[start:end])
+        y_item = torch.tensor(self.y[idx + 1])
+
+        return {
+            "RS+": X_rsp,
+            "RS-": X_rsn,
+            "X_weekly": X_weekly,
+            "X_monthly": X_monthly,
+            "y": y_item
+        }
+
+
+class HAR_J_Dataset(Dataset):
+    """Class for generating data for neural networks with HAR feature inputs"""
+    def __init__(self, data, seq_length):
+        self.seq_length = seq_length
+        self.data = data
+        self.y = data["Daily"].iloc[self.seq_length:]
+
+    def __len__(self):
+        return len(self.y) - 2
+
+    def __getitem__(self, idx):
+        """Method for iterating and indexing the dataset."""
+        end = (self.y.index[idx + 1]
+               - timedelta(days=1)).strftime("%Y-%m-%d")
+        start = (self.y.index[idx + 1]
+                 - timedelta(days=self.seq_length + 1)).strftime("%Y-%m-%d")
+
+        X_daily = torch.Tensor(self.data["Daily"].loc[start:end])
+        X_jump = torch.Tensor(self.data["Jump"].loc[start:end])
+        X_weekly = torch.Tensor(self.data["Weekly"].loc[start:end])
+        X_monthly = torch.Tensor(self.data["Monthly"].loc[start:end])
+        y_item = torch.tensor(self.y[idx + 1])
+
+        return {
+            "X_daily": X_daily,
+            "X_jump": X_jump,
+            "X_weekly": X_weekly,
+            "X_monthly": X_monthly,
+            "y": y_item
+        }
+
+
+def generate_har_dataframe(dataframe):
+    df = pd.DataFrame()
+    df["Daily"] = generate_realized_variance(
+        data=dataframe,
+        resolutions=["5T"],
+        feature="Close"
+    )
+    df["Weekly"] = generate_rolling_realized_variance(
+        data=df["Daily"],
+        roll=7
+    )
+    df["Monthly"] = generate_rolling_realized_variance(
+        data=df["Daily"],
+        roll=30
+    )
+    df = df[30:]
+    return df
+
+
+def generate_log_har_dataframe(dataframe):
+    df = pd.DataFrame()
+    df["Daily"] = generate_realized_variance(
+        data=dataframe,
+        resolutions=["5T"],
+        feature="Close"
+    )
+    df["Weekly"] = generate_rolling_realized_variance(
+        data=df["Daily"],
+        roll=7
+    )
+    df["Monthly"] = generate_rolling_realized_variance(
+        data=df["Daily"],
+        roll=30
+    )
+    df = df[30:]
+    df = np.log(df)
+    return df
+
+
+def generate_har_j_dataframe(dataframe):
+    df = pd.DataFrame()
+    df["Daily"] = generate_realized_variance(
+        data=dataframe,
+        resolutions=["5T"],
+        feature="Close"
+    )
+    df["Weekly"] = generate_rolling_realized_variance(
+        data=df["Daily"],
+        roll=7
+    )
+    df["Monthly"] = generate_rolling_realized_variance(
+        data=df["Daily"],
+        roll=30
+    )
+
+    df["Returns"] = generate_log_returns(
+        data=dataframe,
+        feature="Close",
+        resolution="1D"
+    )
+    df["Jumps"] = generate_squared_jumps(
+        returns=df["Returns"],
+        rv=df["Daily"]
+    )
+    df = df[30:]
+    return df
+
+
+def generate_har_rsi_dataframe(dataframe):
+    df = pd.DataFrame()
+    df["Daily"] = generate_realized_variance(
+        data=dataframe,
+        resolutions=["5T"],
+        feature="Close"
+    )
+    df["Weekly"] = generate_rolling_realized_variance(
+        data=df["Daily"],
+        roll=7
+    )
+    df["Monthly"] = generate_rolling_realized_variance(
+        data=df["Daily"],
+        roll=30
+    )
+
+    df["Returns"] = generate_log_returns(
+        data=dataframe,
+        feature="Close",
+        resolution="1D"
+    )
+    df["RS+"] = generate_semi_variance(
+        returns=df["Returns"],
+        rv=df["Daily"],
+        sign="positive"
+    )
+    df["RS-"] = generate_semi_variance(
+        returns=df["Returns"],
+        rv=df["Daily"],
+        sign="negative"
+    )
+
+    df = df[30:]
+    return df

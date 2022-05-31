@@ -109,8 +109,17 @@ class HAR(Model):
     def in_sample(self):
         return super().in_sample(self.X_train, self.y_train)
 
+    def residuals(self):
+        return super().residuals()
+
+    def in_sample_predict(self):
+        return super().in_sample_predict(self.X_train)
+
     def out_sample_eval(self):
         return super().out_sample_eval(self.X_test, self.y_test)
+
+    def loss(self, metric: str):
+        return super().loss(self.y_test[365:], metric=metric) 
         
 class LogHAR(Model):
     def __init__(self, data, resolutions):
@@ -158,6 +167,9 @@ class LogHAR(Model):
 
     def out_sample_eval(self):
         return super().out_sample_eval(self.X_test, self.y_test)
+
+    def loss(self, metric: str):
+        return super().loss(self.y_test[365:], metric=metric) 
 
 class HAR_QF(Model):
     def __init__(self, data, resolutions):
@@ -214,6 +226,9 @@ class HAR_QF(Model):
 
     def out_sample_eval(self):
         return super().out_sample_eval(self.X_test, self.y_test)
+
+    def loss(self, metric: str):
+        return super().loss(self.y_test[365:], metric=metric) 
 
 class HAR_J(Model):
     def __init__(self, data, resolutions):

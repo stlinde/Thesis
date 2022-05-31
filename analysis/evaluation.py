@@ -10,7 +10,7 @@ def compute_mse(target, predictions):
     :param target:        list - The list containing the targets.
     :param predictions:   list - The list containing the predicted values.
     """
-    errors = [(predictions[i] - target[i])**2 for i in range(len(target))]
+    errors = np.square(predictions - target)
     return np.mean(errors)
 
 def compute_mae(target, predictions):
@@ -18,7 +18,7 @@ def compute_mae(target, predictions):
     :param target:        list - The list containing the targets.
     :param predictions:   list - The list containing the predicted values.
     """
-    errors = [np.abs(predictions[i] - target[i]) for i in range(len(target))]
+    errors = np.abs(predictions - target)
     return np.mean(errors)
 
 def compute_mase(target, predictions):
@@ -42,6 +42,42 @@ def compute_qlike(target, predictions):
     :param target:        list - The list containing the targets.
     :param predictions:   list - The list containing the predicted values.
     """
-    errors = [(np.log(predictions[i]) + target[i] / predictions[i])
-        for i in range(len(target))]
+    errors = np.log(predictions) + target / predictions
+    errors = errors.dropna()
+    # errors = [(np.log(predictions[i]) + target[i] / predictions[i])
+    #     for i in range(len(target))]
     return np.mean(errors)
+
+
+def evaluation_table(model, name: str):
+    y = model.y_train
+    preds = model.in_sample_predict()
+
+    mse = compute_mse(y, preds)
+    mae = compute_mae(y, preds)
+    qlike = compute_qlike(y, preds)
+    losses = [mse, mae, qlike]
+
+    table = pd.DataFrame(columns=[name]) 
+    table["Criterion"] = ["MSE", "MAE", "QLIKE"]
+    table[name] = losses
+
+    table = table.set_index("Criterion")
+
+    return table
+
+
+def evaluation_table_out(model, name: str):
+    mse = model.loss("MSE")
+    mae = model.loss("MAE")
+    qlike = model.loss("QLIKE")
+
+    losses = [mse, mae, qlike]
+
+    table = pd.DataFrame(columns=[name]) 
+    table["Criterion"] = ["MSE", "MAE", "QLIKE"]
+    table[name] = losses
+
+    table = table.set_index("Criterion")
+
+    return table
