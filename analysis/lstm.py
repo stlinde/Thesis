@@ -36,7 +36,7 @@ class HAR_LSTM(nn.Module):
         self.hidden = (hidden_state, cell_state)
 
     def forward(self, x):
-        batch_size, seq_length, _ = x.size(x, self.hidden)
+        batch_size, seq_length, _ = x.size(x)
         lstm_out, self.hidden = self.lstm(x, self.hidden)
         x = lstm_out.contiguous().view(batch_size, -1)
         return self.linear(x)
