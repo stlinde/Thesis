@@ -49,7 +49,7 @@ class Model:
         temp_model = OLS(y, X).fit()
         return temp_model.predict(X_t)
 
-    def out_sample_eval(self, X, y):
+    def out_sample_eval(self, X, y, n_features):
         X = X.reset_index(drop=True)
         y = y.reset_index(drop=True)
         self.forecasts = []
@@ -57,7 +57,7 @@ class Model:
             forecast = self.one_step_ahead(
                 X.iloc[i - 365:i - 1, :],
                 y.iloc[i - 365:i - 1],
-                X.iloc[i, :].values.reshape(1, 4))
+                X.iloc[i, :].values.reshape(1, n_features))
             self.forecasts.append(forecast.item())
         return self.forecasts
 
@@ -79,6 +79,7 @@ class HAR(Model):
     def __init__(self, data, resolutions):
         self.data = data
         self.resolutions = resolutions
+        self.n_features = 4
 
         self.rv = generate_realized_volatility(
             data = self.data,
@@ -119,7 +120,7 @@ class HAR(Model):
         return super().in_sample_predict(self.X_train)
 
     def out_sample_eval(self):
-        return super().out_sample_eval(self.X_test, self.y_test)
+        return super().out_sample_eval(self.X_test, self.y_test, self.n_features)
 
     def loss(self, metric: str):
         return super().loss(self.y_test[365:], metric=metric) 
@@ -128,6 +129,7 @@ class LogHAR(Model):
     def __init__(self, data, resolutions):
         self.data = data
         self.resolutions = resolutions
+        self.n_features = 4
 
         self.rv = generate_realized_volatility(
             data = self.data,
@@ -169,7 +171,7 @@ class LogHAR(Model):
         return super().in_sample_predict(self.X_train)
 
     def out_sample_eval(self):
-        return super().out_sample_eval(self.X_test, self.y_test)
+        return super().out_sample_eval(self.X_test, self.y_test, self.n_features)
 
     def loss(self, metric: str):
         return super().loss(self.y_test[365:], metric=metric) 
@@ -237,6 +239,7 @@ class HAR_J(Model):
     def __init__(self, data, resolutions):
         self.data = data
         self.resolutions = resolutions
+        self.n_features = 4
 
         self.rv = generate_realized_volatility(
             data = self.data,
@@ -286,7 +289,7 @@ class HAR_J(Model):
         return super().in_sample_predict(self.X_train)
 
     def out_sample_eval(self):
-        return super().out_sample_eval(self.X_test, self.y_test)
+        return super().out_sample_eval(self.X_test, self.y_test, self.n_features)
 
     def loss(self, metric: str):
         return super().loss(self.y_test[365:], metric)
@@ -295,6 +298,7 @@ class HAR_RSI(Model):
     def __init__(self, data, resolutions):
         self.data = data
         self.resolutions = resolutions
+        self.n_features = 5
 
         self.rv = generate_realized_volatility(
             data = self.data,
@@ -353,7 +357,7 @@ class HAR_RSI(Model):
         return super().in_sample_predict(self.X_train)
 
     def out_sample_eval(self):
-        return super().out_sample_eval(self.X_test, self.y_test)
+        return super().out_sample_eval(self.X_test, self.y_test, self.n_features)
 
     def loss(self, metric: str):
         return super().loss(self.y_test[365:], metric)
