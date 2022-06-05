@@ -54,3 +54,29 @@ class HAR_DNN(nn.Module):
         return self.layer_3(x)
 
 
+
+class HAR_DNN_6L(nn.Module):
+    def __init__(self, n_features):
+        super(HAR_DNN, self).__init__()
+        self.n_features = n_features
+
+        self.layer_1 = nn.Linear(self.n_features, 8, bias=False)
+        self.layer_2 = nn.Linear(8, 16, bias=False)
+        self.layer_3 = nn.Linear(16, 32, bias=False)
+        self.layer_4 = nn.Linear(32, 16, bias=False)
+        self.layer_5 = nn.Linear(16, 8, bias=False)
+        self.layer_6 = nn.Linear(8, 1)
+
+        self.silu = nn.SiLU()
+        self.revin = ReversibleInstanceNormalization()
+
+    def forward(self, x):
+        x = self.revin(x, "norm")
+        x = self.silu(self.layer_1(x))
+        x = self.silu(self.layer_2(x))
+        x = self.silu(self.layer_3(x))
+        x = self.silu(self.layer_4(x))
+        x = self.silu(self.layer_5(x))
+        x = self.revin(x, "denorm")
+        return self.layer_6(x)
+

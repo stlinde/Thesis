@@ -74,6 +74,14 @@ def generate_realized_variance(data, resolutions: list, feature:str = "Close"):
         )
     return temp.mean(axis=1)
 
+def generate_realized_volatility(data, resolutions: list, feature: str = "Close"):
+    """Generates the realized volatility of a return series.
+    :param data:        pd.DataFrame - The DataFrame holding the data.
+    :param feature:     str - The feature to compute the returns on.
+    :param resolutions: list - The intervals to compute the returns over.
+    """
+    return np.sqrt(generate_realized_variance(data, resolutions, feature))
+
 def generate_rolling_realized_variance(data, roll: int):
     """Generates rolling average of the realized variance.
     :param data:        pd.Series - The realized variance.

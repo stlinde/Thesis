@@ -11,7 +11,8 @@ from statsmodels.regression.linear_model import OLS
 
 from helpers import ( 
     set_datetime_index,
-    generate_realized_variance, 
+    generate_realized_volatility, 
+    generate_realized_volatility,
     generate_realized_quarticity,
     generate_rolling_realized_variance,
     generate_log_returns,
@@ -54,8 +55,7 @@ class Model:
         self.forecasts = []
         for i in range(365, len(X)):
             self.forecasts.append(
-                self.one_step_ahead(X.iloc[i - 365:i - 1, :], y.iloc[i - 365:i - 1], X.iloc[i, :]).item()
-            )
+                self.one_step_ahead(X.iloc[i - 365:i - 1, :], y.iloc[i - 365:i - 1], X.iloc[i, :]).item())
         return self.forecasts
 
     def loss(self, y_test, metric: str):
@@ -77,7 +77,7 @@ class HAR(Model):
         self.data = data
         self.resolutions = resolutions
 
-        self.rv = generate_realized_variance(
+        self.rv = generate_realized_volatility(
             data = self.data,
             resolutions = self.resolutions,
             feature = "Close"
@@ -126,7 +126,7 @@ class LogHAR(Model):
         self.data = data
         self.resolutions = resolutions
 
-        self.rv = generate_realized_variance(
+        self.rv = generate_realized_volatility(
             data = self.data,
             resolutions = self.resolutions,
             feature = "Close"
@@ -176,7 +176,7 @@ class HAR_QF(Model):
         self.data = data
         self.resolutions = resolutions
 
-        self.rv = generate_realized_variance(
+        self.rv = generate_realized_volatility(
             data = self.data,
             resolutions = self.resolutions,
             feature = "Close"
@@ -235,7 +235,7 @@ class HAR_J(Model):
         self.data = data
         self.resolutions = resolutions
 
-        self.rv = generate_realized_variance(
+        self.rv = generate_realized_volatility(
             data = self.data,
             resolutions = self.resolutions,
             feature = "Close"
@@ -293,7 +293,7 @@ class HAR_RSI(Model):
         self.data = data
         self.resolutions = resolutions
 
-        self.rv = generate_realized_variance(
+        self.rv = generate_realized_volatility(
             data = self.data,
             resolutions = self.resolutions,
             feature = "Close"
