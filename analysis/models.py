@@ -54,8 +54,11 @@ class Model:
         y = y.reset_index(drop=True)
         self.forecasts = []
         for i in range(365, len(X)):
-            self.forecasts.append(
-                self.one_step_ahead(X.iloc[i - 365:i - 1, :], y.iloc[i - 365:i - 1], X.iloc[i, :]).item())
+            forecast = self.one_step_ahead(
+                X.iloc[i - 365:i - 1, :],
+                y.iloc[i - 365:i - 1],
+                X.iloc[i, :].values.reshape(1, 4))
+            self.forecasts.append(forecast.item())
         return self.forecasts
 
     def loss(self, y_test, metric: str):
