@@ -158,11 +158,13 @@ class HAR_RS_I_Dataset(Dataset):
 
         X_rsp = torch.Tensor(self.data["RS+"].loc[start:end])
         X_rsn = torch.Tensor(self.data["RS-"].loc[start:end])
+        X_daily = torch.Tensor(self.data["Data"].loc[start:end])
         X_weekly = torch.Tensor(self.data["Weekly"].loc[start:end])
         X_monthly = torch.Tensor(self.data["Monthly"].loc[start:end])
         y_item = torch.tensor(self.y[idx + 1])
 
         return {
+            "X_daily": X_daily,
             "RS+": X_rsp,
             "RS-": X_rsn,
             "X_weekly": X_weekly,
@@ -189,7 +191,7 @@ class HAR_J_Dataset(Dataset):
                  - timedelta(days=self.seq_length + 1)).strftime("%Y-%m-%d")
 
         X_daily = torch.Tensor(self.data["Daily"].loc[start:end])
-        X_jump = torch.Tensor(self.data["Jump"].loc[start:end])
+        X_jump = torch.Tensor(self.data["Jumps"].loc[start:end])
         X_weekly = torch.Tensor(self.data["Weekly"].loc[start:end])
         X_monthly = torch.Tensor(self.data["Monthly"].loc[start:end])
         y_item = torch.tensor(self.y[idx + 1])
