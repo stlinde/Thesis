@@ -239,7 +239,7 @@ class HAR_J(Model):
     def __init__(self, data, resolutions):
         self.data = data
         self.resolutions = resolutions
-        self.n_features = 4
+        self.n_features = 5
 
         self.rv = generate_realized_volatility(
             data = self.data,
