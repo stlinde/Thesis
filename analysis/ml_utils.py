@@ -260,13 +260,13 @@ def generate_har_j_dataframe(dataframe):
         roll=30
     )
 
-    df["Returns"] = generate_log_returns(
+    returns = generate_log_returns(
         data=dataframe,
         feature="Close",
-        resolution="1D"
+        resolution="5T"
     )
     df["Jumps"] = generate_squared_jumps(
-        returns=df["Returns"],
+        returns=returns,
         rv=df["Daily"]
     )
     df = df[30:]
@@ -295,13 +295,13 @@ def generate_har_rsi_dataframe(dataframe):
         resolution="1D"
     )
     df["RS+"] = generate_semi_variance(
-        returns=df["Returns"],
-        rv=df["Daily"],
+        data=dataframe, 
+        resolution="5T",
         sign="positive"
     )
     df["RS-"] = generate_semi_variance(
-        returns=df["Returns"],
-        rv=df["Daily"],
+        data=dataframe, 
+        resolution="5T",
         sign="negative"
     )
 

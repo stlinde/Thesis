@@ -126,17 +126,21 @@ def generate_realized_quarticity(data):
     """
     return realized_quantity(data, realized_quarticity)
 
-def generate_semi_variance(rv, returns, sign: str):
-    """Generates the realized semi variance.
-    :param rv:    pd.Series - The series containing the resalized variance.
-    :param returns: pd.Series - The series containing the returns.
-    :param sign:    str - positive or negative semivariance.
+def generate_semi_variance(data, resolution: str, sign: str):
+    """Generates the realized variance of a return series
+    :param data:        pd.DataFrame - The DataFrame holding the data.
+    :param feature:     str - The feature to compute the returns on.
+    :param resolutions: list - The intervals to compute the returns over.
     """
+    temp = pd.DataFrame()
+    temp["returns"] = generate_log_returns(data, "Close", resolution)
+    temp["positive"] = temp["returns"].clip(0, np.inf)
+    temp["negative"] = temp["returns"].clip(-np.inf, 0)
     if sign == "positive":
-        return [rv[i] if returns[i] > 0 else 0 for i in range(len(rv))]
+        return temp["positive"].pow(2).groupby(pd.Grouper(freq="D")).sum()
     else:
-        return [rv[i] if returns[i] < 0 else 0 for i in range(len(rv))]
-
+        return temp["negative"].pow(2).groupby(pd.Grouper(freq="D")).sum()
+            
 
 def interpolate_missing_values(data):
     """Interpolates missing values in DataFrame.

@@ -247,10 +247,10 @@ class HAR_J(Model):
             feature = "Close"
         )
 
-        self.daily_returns = generate_log_returns(
+        self.returns = generate_log_returns(
             data = self.data,
             feature = "Close",
-            resolution = "1D"
+            resolution = "5T"
         )
 
         # Setting up data needed.
@@ -263,12 +263,12 @@ class HAR_J(Model):
             temp["Daily"], roll=30
         )
         temp = temp[1:]
-        temp["Jumps"] = generate_squared_jumps(self.daily_returns, self.rv)
+        temp["Jumps"] = generate_squared_jumps(self.returns, self.rv)
 
         temp = temp.iloc[29:, :].reset_index(drop=True)
 
         # Setting up the X_train, X_test, y_train, y_test
-        self.X = sm.add_constant(temp.iloc[:-1, 1:].reset_index(drop=True))
+        self.X = sm.add_constant(temp.iloc[:-1, :].reset_index(drop=True))
         self.y = temp['Daily'][1:].reset_index(drop=True)
 
         # Creating train size
@@ -324,13 +324,13 @@ class HAR_RSI(Model):
         temp = temp[1:]
 
         temp["RS+"] = generate_semi_variance(
-            temp["Daily"],
-            self.daily_returns,
+            self.data,
+            "5T",
             "positive"
         )
         temp["RS-"] = generate_semi_variance(
-            temp["Daily"],
-            self.daily_returns,
+            self.data,
+            "5T",
             "negative"
         )
         temp = temp.iloc[29:, :]
