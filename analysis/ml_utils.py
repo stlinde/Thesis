@@ -14,6 +14,7 @@ import torch.nn as nn
 import torch.optim as optim
 
 from helpers import generate_realized_volatility, generate_rolling_realized_variance, interpolate_missing_values
+from helpers import generate_realized_variance
 from helpers import generate_log_returns, generate_squared_jumps
 from helpers import generate_semi_variance
 
@@ -246,7 +247,7 @@ def generate_log_har_dataframe(dataframe):
 
 def generate_har_j_dataframe(dataframe):
     df = pd.DataFrame()
-    df["Daily"] = generate_realized_volatility(
+    df["Daily"] = generate_realized_variance(
         data=dataframe,
         resolutions=["5T"],
         feature="Close"
@@ -260,14 +261,9 @@ def generate_har_j_dataframe(dataframe):
         roll=30
     )
 
-    returns = generate_log_returns(
-        data=dataframe,
-        feature="Close",
-        resolution="5T"
-    )
     df["Jumps"] = generate_squared_jumps(
-        returns=returns,
-        rv=df["Daily"]
+        data=dataframe,
+        resolution="5T"
     )
     df = df[30:]
     return df
@@ -275,7 +271,7 @@ def generate_har_j_dataframe(dataframe):
 
 def generate_har_rsi_dataframe(dataframe):
     df = pd.DataFrame()
-    df["Daily"] = generate_realized_volatility(
+    df["Daily"] = generate_realized_variance(
         data=dataframe,
         resolutions=["5T"],
         feature="Close"
