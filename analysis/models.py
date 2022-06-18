@@ -1,6 +1,5 @@
 # analysis/models.py
-"""
-Implements the econometric models in the analysis.
+""" Implements the econometric models in the analysis.
 Implements functionalities for training and testing.
 """
 import pandas as pd
@@ -11,7 +10,7 @@ from statsmodels.regression.linear_model import OLS
 
 from helpers import ( 
     set_datetime_index,
-    generate_realized_volatility, 
+    generate_realized_variance,
     generate_realized_volatility,
     generate_realized_quarticity,
     generate_rolling_realized_variance,
@@ -176,64 +175,6 @@ class LogHAR(Model):
     def loss(self, metric: str):
         return super().loss(self.y_test[365:], metric=metric) 
 
-class HAR_QF(Model):
-    def __init__(self, data, resolutions):
-        self.data = data
-        self.resolutions = resolutions
-
-        self.rv = generate_realized_volatility(
-            data = self.data,
-            resolutions = self.resolutions,
-            feature = "Close"
-        )
-
-        # Setting up data needed.
-        temp = pd.DataFrame()
-        temp["Daily"] = self.rv
-        temp["Weekly"] = generate_rolling_realized_variance(
-            temp["Daily"], roll=7
-        )
-        temp["Monthly"] = generate_rolling_realized_variance(
-            temp["Daily"], roll=30
-        )
-        temp = temp.iloc[30:, :]
-
-        temp['RQ1RV1']  = np.sqrt(
-            generate_realized_quarticity(temp['Daily'])) * temp['Daily']
-        
-        temp['RQ2RV2']  = np.sqrt(
-            generate_realized_quarticity(temp['Weekly'])) * temp['Weekly']
-
-        temp['RQ3RV3']  = np.sqrt(
-            generate_realized_quarticity(temp['Monthly'])) * temp['Monthly']
-
-        temp.iloc[30:, :]
-        self.X = temp.iloc[:-1, -3:].reset_index(drop=True)
-        self.X = sm.add_constant(self.X)
-        self.y = np.log(temp['Daily'][1:].reset_index(drop=True))
-
-        # Creating train size
-        train_size_int = int(self.X.shape[0] *  TRAIN_SIZE // 1)
-
-        self.X_train = self.X.iloc[:train_size_int, :]
-        self.X_test = self.X.iloc[train_size_int - TRAIN_PERIOD:, :]
-        self.y_train = self.y.iloc[:train_size_int]
-        self.y_test = self.y.iloc[train_size_int - TRAIN_PERIOD:]
-
-    def in_sample(self):
-        return super().in_sample(self.X_train, self.y_train)
-
-    def residuals(self):
-        return super().residuals()
-
-    def in_sample_predict(self):
-        return super().in_sample_predict(self.X_train)
-
-    def out_sample_eval(self):
-        return super().out_sample_eval(self.X_test, self.y_test)
-
-    def loss(self, metric: str):
-        return super().loss(self.y_test[365:], metric=metric) 
 
 class HAR_J(Model):
     def __init__(self, data, resolutions):
@@ -241,7 +182,7 @@ class HAR_J(Model):
         self.resolutions = resolutions
         self.n_features = 5
 
-        self.rv = generate_realized_volatility(
+        self.rv = generate_realized_variance(
             data = self.data,
             resolutions = self.resolutions,
             feature = "Close"
@@ -263,7 +204,7 @@ class HAR_J(Model):
             temp["Daily"], roll=30
         )
         temp = temp[1:]
-        temp["Jumps"] = generate_squared_jumps(self.returns, self.rv)
+        temp["Jumps"] = generate_squared_jumps(self.data, "5T")
 
         temp = temp.iloc[29:, :].reset_index(drop=True)
 
@@ -300,7 +241,7 @@ class HAR_RSI(Model):
         self.resolutions = resolutions
         self.n_features = 5
 
-        self.rv = generate_realized_volatility(
+        self.rv = generate_realized_variance(
             data = self.data,
             resolutions = self.resolutions,
             feature = "Close"
@@ -336,7 +277,7 @@ class HAR_RSI(Model):
         temp = temp.iloc[29:, :]
 
         # Setting up the X_train, X_test, y_train, y_test
-        self.X = sm.add_constant(temp.iloc[:-1, 1:].reset_index(drop=True))
+        self.X = sm.add_constant(temp.iloc[:-1, :].reset_index(drop=True))
         self.y = temp['Daily'][1:].reset_index(drop=True)
 
         # Creating train size

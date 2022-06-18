@@ -103,15 +103,27 @@ def generate_bpv(data):
     return realized_quantity(data, bipower_variation)
 
 
-def generate_squared_jumps(returns, rv):
+def generate_squared_jumps(data, resolution: str):
     """Generates the squared jumps.
-    :param returns:     pd.Series - The returns.
-    :param rv:          pd.Series - The realized variances
+    :param data:    pd.DataFrame - The dataframe holding the close prices.
     """
     df = pd.DataFrame()
-    df["bpv"] = generate_bpv(returns)
-    df["rv"] = rv
-    df["jumps"] = np.maximum(df["rv"] - df["bpv"], 0)
+
+    df["Returns"] = generate_log_returns(
+        data=data,
+        feature="Close",
+        resolution=resolution
+    )
+    df["Realized Variance"] = generate_realized_variance(
+        data=data,
+        feature="Close", 
+        resolutions=[resolution]
+    )
+    df["Bipower Variation"] = generate_bpv(df["Returns"])
+    df["jumps"] = np.maximum(
+        df["Realized Variance"] - df["Bipower Variation"],
+        0
+    )
     return df["jumps"]
 
 def realized_quarticity(data):
@@ -126,6 +138,22 @@ def generate_realized_quarticity(data):
     """
     return realized_quantity(data, realized_quarticity)
 
+
+#def generate_semi_variance(data, resolution: str, sign: str):
+#    """Generates the realized variance of a return series
+#    :param data:        pd.DataFrame - The DataFrame holding the data.
+#    :param feature:     str - The feature to compute the returns on.
+#    :param resolutions: list - The intervals to compute the returns over.
+#    """
+#    temp = pd.DataFrame()
+#    temp["returns"] = generate_log_returns(data, "Close", resolution)
+#    temp["positive"] = temp["returns"].clip(0, np.inf)
+#    temp["negative"] = temp["returns"].clip(-np.inf, 0)
+#    if sign == "positive":
+#        return temp["positive"].pow(2).groupby(pd.Grouper(freq="D")).sum()
+#    else:
+#        return temp["negative"].pow(2).groupby(pd.Grouper(freq="D")).sum()
+            
 def generate_semi_variance(data, resolution: str, sign: str):
     """Generates the realized variance of a return series
     :param data:        pd.DataFrame - The DataFrame holding the data.
@@ -134,13 +162,13 @@ def generate_semi_variance(data, resolution: str, sign: str):
     """
     temp = pd.DataFrame()
     temp["returns"] = generate_log_returns(data, "Close", resolution)
-    temp["positive"] = temp["returns"].clip(0, np.inf)
-    temp["negative"] = temp["returns"].clip(-np.inf, 0)
+    temp["positive"] = temp["returns"].apply(lambda x: x ** 2 * (x > 0))
+    temp["negative"] = temp["returns"].apply(lambda x: x ** 2 * (x < 0))
+
     if sign == "positive":
-        return temp["positive"].pow(2).groupby(pd.Grouper(freq="D")).sum()
+        return temp["positive"].groupby(pd.Grouper(freq="D")).sum()
     else:
-        return temp["negative"].pow(2).groupby(pd.Grouper(freq="D")).sum()
-            
+        return temp["negative"].groupby(pd.Grouper(freq="D")).sum()
 
 def interpolate_missing_values(data):
     """Interpolates missing values in DataFrame.
