@@ -247,7 +247,7 @@ def generate_log_har_dataframe(dataframe):
 
 def generate_har_j_dataframe(dataframe):
     df = pd.DataFrame()
-    df["Daily"] = generate_realized_variance(
+    df["Daily"] = generate_realized_volatility(
         data=dataframe,
         resolutions=["5T"],
         feature="Close"
@@ -271,7 +271,7 @@ def generate_har_j_dataframe(dataframe):
 
 def generate_har_rsi_dataframe(dataframe):
     df = pd.DataFrame()
-    df["Daily"] = generate_realized_variance(
+    df["Daily"] = generate_realized_volatility(
         data=dataframe,
         resolutions=["5T"],
         feature="Close"
