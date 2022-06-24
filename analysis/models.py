@@ -209,7 +209,7 @@ class HAR_J(Model):
         temp = temp.iloc[29:, :].reset_index(drop=True)
 
         # Setting up the X_train, X_test, y_train, y_test
-        self.X = sm.add_constant(temp.iloc[:-1, :].reset_index(drop=True))
+        self.X = sm.add_constant(temp.iloc[:-1, 1:].reset_index(drop=True))
         self.y = temp['Daily'][1:].reset_index(drop=True)
 
         # Creating train size
